@@ -1,24 +1,24 @@
 ﻿import Sequelize, { Model } from 'sequelize';
 import bcrypt from 'bcryptjs';
 
-class User extends Model{
-  static init(sequelize){
+class User extends Model {
+  static init(sequelize) {
     super.init({
       name: Sequelize.STRING,
       email: Sequelize.STRING,
       password: Sequelize.VIRTUAL,
       password_hash: Sequelize.STRING,
-      provider: Sequelize.BOOLEAN
+      provider: Sequelize.BOOLEAN,
     },
-    {
-      sequelize,
-    });
+      {
+        sequelize,
+      });
 
     this.addHook('beforeSave', async (user) => {
 
       // Só gera um hash quando informado o password.
       // Ou seja, quando está criando um usuário ou editando a senha
-      if (user.password){
+      if (user.password) {
         user.password_hash = await bcrypt.hash(user.password, 8);
       }
     });
@@ -26,7 +26,11 @@ class User extends Model{
     return this;
   }
 
-  checkPassword(password){
+  static associate(models) {
+    this.belongsTo(models.File, { foreignKey: 'avatar_id', as: 'avatar' });
+  }
+
+  checkPassword(password) {
     return bcrypt.compare(password, this.password_hash);
   }
 }
