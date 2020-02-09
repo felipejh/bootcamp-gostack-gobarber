@@ -25,7 +25,7 @@ module.exports = {
         onDelete: 'SET NULL',
       },
       canceled_at: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.DATE,
       },
       created_at: {
         type: Sequelize.DATE,
