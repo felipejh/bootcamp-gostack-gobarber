@@ -19,7 +19,7 @@ class NotificationController {
       user: req.userId,
     }).sort({ createdAt: 'desc' }).limit(20);
 
-    return res.json({ notifications });
+    return res.json( notifications );
   }
 
   async update(req, res) {
